@@ -1,28 +1,38 @@
-influxdb:
-  image: influxdb:2.7
-  container_name: influxdbmodule2
-  restart: unless-stopped
+version: "3.9"
 
-  ports:
-    - "8086:8086"
+services:
 
-  volumes:
-    - influxdb_data:/var/lib/influxdb2
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdbmodule2
+    restart: unless-stopped
 
-  environment:
-    DOCKER_INFLUXDB_INIT_MODE: setup
-    DOCKER_INFLUXDB_INIT_USERNAME: admin
-    DOCKER_INFLUXDB_INIT_PASSWORD: adminadmin123
-    DOCKER_INFLUXDB_INIT_ORG: openhab
-    DOCKER_INFLUXDB_INIT_BUCKET: openhab
-    DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: DYV2UyIOUawJZanlsex_FzasHU30zWmOgKyxMWFiICP-G5FF66VrWykaZ43WdWDM-yJMkxwwHzkhT9YNQu7NXQ==
+    ports:
+      - "8086:8086"
 
-  networks:
-    - smart_home_net
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
 
-  healthcheck:
-    test: ["CMD-SHELL", "wget -qO- http://localhost:8086/health || exit 1"]
-    interval: 20s
-    timeout: 10s
-    retries: 10
-    start_period: 30s
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: adminadmin123
+      DOCKER_INFLUXDB_INIT_ORG: openhab
+      DOCKER_INFLUXDB_INIT_BUCKET: openhab
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: DYV2UyIOUawJZanlsex_FzasHU30zWmOgKyxMWFiICP-G5FF66VrWykaZ43WdWDM-yJMkxwwHzkhT9YNQu7NXQ==
+
+    networks:
+      - smart_home_net
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8086/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+networks:
+  smart_home_net:
+
+volumes:
+  influxdb_data:
