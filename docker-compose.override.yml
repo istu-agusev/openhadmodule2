@@ -4,10 +4,15 @@ services:
       context: .
       dockerfile: tests/Dockerfile
     container_name: integration_test_runner
-    depends_on:
-      - mosquitto
-      - edge_ai
-      - sensor_simulator
+   depends_on:
+    mosquitto:
+      condition: service_healthy
+    influxdb:
+      condition: service_healthy
+    edge_ai:
+      condition: service_started
+    sensor_simulator:
+      condition: service_started
     networks:
       - smart_home_net
     environment:
