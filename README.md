@@ -91,6 +91,7 @@ openhadmodule2/
 ├── .env.example
 ├── .env
 ├── .gitignore
+
 Система побудована як багаторівнева IoT-архітектура:
 
 Sensor Layer (simulator / реальні сенсори)
