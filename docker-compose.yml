@@ -63,27 +63,32 @@ services:
       - smart_home_net
     
   influxdb:
-    image: influxdb:2.7
-    container_name: influxdbmodule2
-    restart: unless-stopped
-    ports:
-      - "${INFLUXDB_PORT}:8086"
-    volumes:
-      - influxdb_data:/var/lib/influxdb2
-    environment:
-      DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_USER}
-      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD}
-      DOCKER_INFLUXDB_INIT_ORG: openhab
-      DOCKER_INFLUXDB_INIT_BUCKET: openhab
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_TOKEN}
-    networks:
-      - smart_home_net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  image: influxdb:2.7
+  container_name: influxdbmodule2
+  restart: unless-stopped
+  ports:
+    - "${INFLUXDB_PORT}:8086"
+
+  volumes:
+    - influxdb_data:/var/lib/influxdb2
+
+  environment:
+    DOCKER_INFLUXDB_INIT_MODE: setup
+    DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_USER}
+    DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD}
+    DOCKER_INFLUXDB_INIT_ORG: openhab
+    DOCKER_INFLUXDB_INIT_BUCKET: openhab
+    DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_TOKEN}
+
+  networks:
+    - smart_home_net
+
+  healthcheck:
+    test: ["CMD-SHELL", "wget -qO- http://localhost:8086/health || exit 1"]
+    interval: 30s
+    timeout: 10s
+    retries: 10
+    start_period: 40s
 
   grafana:
     image: grafana/grafana:10.0.0
