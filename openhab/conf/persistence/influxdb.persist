@@ -1,0 +1,21 @@
+Strategies {
+    everyMinute : "0 * * * * ?"
+    everyChange : "0 0/1 * * * ?"
+}
+
+Items {
+    AirTemperature : strategy = everyMinute
+    AirHumidity    : strategy = everyMinute
+    SoilHumidity   : strategy = everyMinute
+    LightLevel     : strategy = everyMinute
+    CO2            : strategy = everyMinute
+    SoilPH         : strategy = everyMinute
+
+    EdgeGrowthIndex : strategy = everyMinute
+    DiseaseRisk     : strategy = everyMinute
+
+    Heater      : strategy = everyChange
+    Fan         : strategy = everyChange
+    Irrigation  : strategy = everyChange
+    LEDLight    : strategy = everyChange
+}

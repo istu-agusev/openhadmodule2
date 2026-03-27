@@ -1,0 +1,159 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "panels": [
+
+    {
+      "type": "timeseries",
+      "title": "Air Temperature (°C)",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"AirTemperature\" and r._field == \"value\")",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "celsius" } },
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Air Humidity (%)",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"AirHumidity\" and r._field == \"value\")",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percent" } },
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Soil Humidity (%)",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"SoilHumidity\" and r._field == \"value\")",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percent" } },
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Soil Temperature (°C)",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"SoilTemperature\" and r._field == \"value\")",
+          "refId": "J"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "celsius" } },
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Soil Temperature (°C)",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"SoilTemperature\" and r._field == \"value\")",
+          "refId": "D"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "celsius" } },
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "timeseries",
+      "title": "CO2 (ppm)",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"CO2\" and r._field == \"value\")",
+          "refId": "E"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "ppm" } },
+      "gridPos": { "x": 0, "y": 16, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "timeseries",
+      "title": "Soil pH",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"SoilPH\" and r._field == \"value\")",
+          "refId": "F"
+        }
+      ],
+      "fieldConfig": { "defaults": { "min": 0, "max": 14 } },
+      "gridPos": { "x": 12, "y": 16, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "gauge",
+      "title": "Light Level (lux)",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-5m) |> filter(fn: (r) => r._measurement == \"Light\" and r._field == \"value\") |> last()",
+          "refId": "G"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "lux" } },
+      "gridPos": { "x": 0, "y": 24, "w": 12, "h": 8 }
+    },
+
+    {
+      "type": "stat",
+      "title": "Growth Index",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"EdgeGrowthIndex\" and r._field == \"value\") |> last()",
+          "refId": "H"
+        }
+      ],
+      "gridPos": { "x": 12, "y": 24, "w": 6, "h": 4 }
+    },
+
+    {
+      "type": "stat",
+      "title": "Disease Risk",
+      "datasource": "InfluxDB",
+      "targets": [
+        {
+          "query": "from(bucket:\"openhab\") |> range(start:-2h) |> filter(fn: (r) => r._measurement == \"DiseaseRisk\" and r._field == \"value\") |> last()",
+          "refId": "I"
+        }
+      ],
+      "gridPos": { "x": 18, "y": 24, "w": 6, "h": 4 }
+    }
+
+  ],
+  "schemaVersion": 42,
+  "title": "Smart Greenhouse IoT Dashboard",
+  "uid": "greenhouse_iot"
+}

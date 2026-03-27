@@ -1,0 +1,10 @@
+{
+  "@context": "https://www.w3.org/2019/wot/td/v1",
+  "title": "Greenhouse Actuators",
+  "actions": {
+    "heater": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/cmd/heater" }] },
+    "fan": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/cmd/fan" }] },
+    "pump": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/cmd/pump" }] },
+    "led": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/cmd/led" }] }
+  }
+}

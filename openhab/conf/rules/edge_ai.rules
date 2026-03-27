@@ -1,0 +1,18 @@
+rule "Edge AI Reaction"
+when
+    Item EdgeGrowthIndex changed or
+    Item DiseaseRisk changed
+then
+    val growth = EdgeGrowthIndex.state as Number
+    val risk = DiseaseRisk.state as Number
+
+    if (growth < 0.3) {
+        Irrigation.sendCommand(ON)
+        LEDLight.sendCommand(ON)
+    }
+
+    if (risk > 0.7) {
+        Fan.sendCommand(ON)
+        Irrigation.sendCommand(OFF)
+    }
+end

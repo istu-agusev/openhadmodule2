@@ -1,0 +1,12 @@
+rule "Light Control"
+when
+    Item LightLevel changed
+then
+    val lux = LightLevel.state as Number
+
+    if (lux < 200) {
+        LEDLight.sendCommand(ON)
+    } else if (lux > 400) {
+        LEDLight.sendCommand(OFF)
+    }
+end

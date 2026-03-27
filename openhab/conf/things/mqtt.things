@@ -1,0 +1,53 @@
+Bridge mqtt:broker:local "Local MQTT Broker" [
+    host="mosquitto",
+    port=1883,
+    secure=false,
+    clientID="openhab-greenhouse"
+] {
+
+    Thing topic greenhouse "Greenhouse" {
+
+        Channels:
+
+            Type number : air_temp      [ stateTopic="greenhouse/air_temp" ]
+            Type number : air_humidity  [ stateTopic="greenhouse/air_humidity" ]
+            Type number : soil_humidity [ stateTopic="greenhouse/soil_humidity" ]
+            Type number : soil_temp     [ stateTopic="greenhouse/soil_temp" ]
+            Type number : light_lux     [ stateTopic="greenhouse/light" ]
+            Type number : co2           [ stateTopic="greenhouse/co2" ]
+            Type number : ph            [ stateTopic="greenhouse/ph" ]
+
+            Type switch : heater [
+                stateTopic="greenhouse/actuator/heater",
+                commandTopic="greenhouse/cmd/heater",
+                on="ON",
+                off="OFF"
+            ]
+
+            Type switch : fan [
+                stateTopic="greenhouse/actuator/fan",
+                commandTopic="greenhouse/cmd/fan",
+                on="ON",
+                off="OFF"
+            ]
+
+            Type switch : pump [
+                stateTopic="greenhouse/actuator/pump",
+                commandTopic="greenhouse/cmd/pump",
+                on="ON",
+                off="OFF"
+            ]
+
+            Type switch : led [
+                stateTopic="greenhouse/actuator/led",
+                commandTopic="greenhouse/cmd/led",
+                on="ON",
+                off="OFF"
+            ]
+
+            Type number : growth_index  [ stateTopic="edge/growth_index" ]
+            Type number : disease_risk  [ stateTopic="edge/disease_risk" ]
+            Type string : alerts        [ stateTopic="edge/alerts" ]
+            Type string : action        [ stateTopic="edge/action" ]
+    }
+}

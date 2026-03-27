@@ -1,0 +1,21 @@
+Number AirTemperature "Air Temp [%.1f °C]" { channel="mqtt:topic:local:greenhouse:air_temp" }
+Number AirHumidity "Air Humidity [%.1f %%]" { channel="mqtt:topic:local:greenhouse:air_humidity" }
+
+Number SoilHumidity "Soil Humidity [%.1f %%]" { channel="mqtt:topic:local:greenhouse:soil_humidity" }
+Number SoilTemperature "Soil Temperature [%.1f °C]" { channel="mqtt:topic:local:greenhouse:soil_temp" }
+
+Number LightLevel "Light [%.0f lux]" { channel="mqtt:topic:local:greenhouse:light" }
+
+Number CO2 "CO2 [%.0f ppm]" { channel="mqtt:topic:local:greenhouse:co2" }
+Number SoilPH "Soil pH [%.2f]" { channel="mqtt:topic:local:greenhouse:ph" }
+
+Switch Heater "Heater" { channel="mqtt:topic:local:greenhouse:heater" }
+Switch Fan "Ventilation Fan" { channel="mqtt:topic:local:greenhouse:fan" }
+Switch Irrigation "Irrigation Pump" { channel="mqtt:topic:local:greenhouse:pump" }
+Switch LEDLight "LED Grow Light" { channel="mqtt:topic:local:greenhouse:led" }
+
+Number EdgeGrowthIndex "Growth Index [%.2f]" { channel="mqtt:topic:local:greenhouse:growth_index" }
+Number DiseaseRisk "Disease Risk [%.2f]" { channel="mqtt:topic:local:greenhouse:disease_risk" }
+
+String EdgeAlerts "Alerts [%s]" { channel="mqtt:topic:local:greenhouse:alerts" }
+String EdgeAction "AI Action [%s]" { channel="mqtt:topic:local:greenhouse:action" }

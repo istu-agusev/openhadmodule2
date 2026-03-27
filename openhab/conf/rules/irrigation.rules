@@ -1,0 +1,12 @@
+rule "Soil Moisture Control"
+when
+    Item SoilHumidity changed
+then
+    val soil = SoilHumidity.state as Number
+
+    if (soil < 35) {
+        Irrigation.sendCommand(ON)
+    } else if (soil > 60) {
+        Irrigation.sendCommand(OFF)
+    }
+end

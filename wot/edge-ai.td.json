@@ -1,0 +1,9 @@
+{
+  "@context": "https://www.w3.org/2019/wot/td/v1",
+  "title": "Edge AI",
+  "properties": {
+    "growthIndex": { "forms": [{ "href": "mqtt://mosquitto/edge/growth_index" }] },
+    "diseaseRisk": { "forms": [{ "href": "mqtt://mosquitto/edge/disease_risk" }] },
+    "alerts": { "forms": [{ "href": "mqtt://mosquitto/edge/alerts" }] }
+  }
+}

@@ -1,0 +1,22 @@
+rule "Climate Control"
+when
+    Item AirTemperature changed or
+    Item AirHumidity changed
+then
+    val temp = AirTemperature.state as Number
+    val hum  = AirHumidity.state as Number
+
+    if (temp < 18) {
+        Heater.sendCommand(ON)
+    } else if (temp > 26) {
+        Heater.sendCommand(OFF)
+        Fan.sendCommand(ON)
+    } else {
+        Heater.sendCommand(OFF)
+        Fan.sendCommand(OFF)
+    }
+
+    if (hum > 80) {
+        Fan.sendCommand(ON)
+    }
+end

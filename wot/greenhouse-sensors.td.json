@@ -1,0 +1,12 @@
+{
+  "@context": "https://www.w3.org/2019/wot/td/v1",
+  "title": "Greenhouse Sensors",
+  "properties": {
+    "temperature": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/air/temp" }] },
+    "humidity": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/air/humidity" }] },
+    "soilHumidity": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/soil/humidity" }] },
+    "light": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/light/lux" }] },
+    "co2": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/co2" }] },
+    "ph": { "forms": [{ "href": "mqtt://mosquitto/greenhouse/ph" }] }
+  }
+}

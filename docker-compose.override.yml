@@ -1,0 +1,15 @@
+services:
+  test_runner:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
+    container_name: integration_test_runner
+    depends_on:
+      - mosquitto
+      - edge_ai
+      - sensor_simulator
+    networks:
+      - smart_home_net
+    environment:
+      - MQTT_HOST=mosquitto
+    command: ["pytest", "-q", "tests/integration"]

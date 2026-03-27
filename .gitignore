@@ -1,0 +1,7 @@
+openhab/userdata/
+.env
+.pytest_cache
+.venv
+*__pycache__/
+*README.txt
+*.log

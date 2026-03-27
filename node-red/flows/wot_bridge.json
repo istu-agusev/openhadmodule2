@@ -1,0 +1,17 @@
+[
+  {
+    "id": "mqtt_in",
+    "type": "mqtt in",
+    "topic": "greenhouse/#"
+  },
+  {
+    "id": "normalize",
+    "type": "function",
+    "func": "return {payload:{topic:msg.topic,value:msg.payload}};"
+  },
+  {
+    "id": "mqtt_out",
+    "type": "mqtt out",
+    "topic": "wot/events"
+  }
+]

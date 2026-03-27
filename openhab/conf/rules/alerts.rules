@@ -1,0 +1,13 @@
+rule "Log Alerts"
+when
+    Item EdgeAlerts changed
+then
+    logInfo("AI_ALERT", EdgeAlerts.state.toString)
+end
+
+rule "AI Action Log"
+when
+    Item EdgeAction changed
+then
+    logInfo("AI_ACTION", EdgeAction.state.toString)
+end

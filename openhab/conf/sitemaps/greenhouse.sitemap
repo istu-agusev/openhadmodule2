@@ -1,0 +1,28 @@
+sitemap greenhouse label="Smart Greenhouse Control Panel"
+{
+    Frame label="Environment Sensors" {
+
+        Text item=AirTemperature
+        Text item=AirHumidity
+        Text item=SoilHumidity
+        Text item=SoilTemperature
+        Text item=LightLevel
+    }
+
+    Frame label="Actuators Control" {
+
+        Switch item=Heater
+        Switch item=Fan
+        Switch item=LEDLight
+        Switch item=Irrigation
+    }
+
+    Frame label="Automation Status" {
+
+        Text item=EdgeGrowthIndex label="Growth Index [%.2f]"
+        Text item=DiseaseRisk label="Disease Risk [%.2f]"
+        Text item=EdgeAction label="AI Action [%s]"
+        Text item=EdgeAlerts label="Alerts [%s]"
+    }
+
+}
