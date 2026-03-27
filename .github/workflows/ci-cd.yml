@@ -20,6 +20,11 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest paho-mqtt numpy
+
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
@@ -36,22 +41,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Docker Compose plugin
-        run: |
-          docker compose version
+      - name: Verify Docker Compose
+        run: docker compose version
 
       - name: Build and start full stack
-        run: |
-          docker compose up --build -d
+        run: docker compose up --build -d
 
-      - name: Wait for services to stabilize
-        run: sleep 20
+      - name: Show running containers
+        run: docker compose ps
 
       - name: Run integration tests container
-        run: |
-          docker compose run --rm integration_test_runner
+        run: docker compose run --rm integration_test_runner
 
       - name: Shutdown stack
         if: always()
-        run: |
-          docker compose down -v
+        run: docker compose down -v
