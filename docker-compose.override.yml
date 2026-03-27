@@ -7,9 +7,9 @@ services:
 
     depends_on:
       mosquitto:
-        condition: service_healthy
+        condition: service_started
       influxdb:
-        condition: service_healthy
+        condition: service_started
       edge_ai:
         condition: service_started
       sensor_simulator:
