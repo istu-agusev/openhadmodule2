@@ -1,132 +1,28 @@
-services:
-  openhab:
-    image: openhab/openhab:latest
-    container_name: openhabmodule2
-    restart: unless-stopped
-    ports:
-      - "${OPENHAB_HTTP_PORT}:8080"
-    volumes:
-      - ./openhab/conf:/openhab/conf
-      - ./openhab/userdata:/openhab/userdata
-      - ./openhab/addons:/openhab/addons
-    environment:
-      - USER_ID=1000
-      - GROUP_ID=1000
-    depends_on:
-      influxdb:
-        condition: service_healthy
-      mosquitto:
-        condition: service_started
-    networks:
-      - smart_home_net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  mosquitto:
-    image: eclipse-mosquitto:2.0
-    container_name: mosquittomodule2
-    restart: unless-stopped
-    ports:
-      - "1883:1883"
-    volumes:
-      - ./mosquitto/config:/mosquitto/config
-      - ./mosquitto/data:/mosquitto/data
-      - ./mosquitto/log:/mosquitto/log
-    networks:
-      - smart_home_net
-    healthcheck:
-      test: ["CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  edge_ai:
-    build: ./edge_ai
-    container_name: edge_aimodule2
-    restart: unless-stopped
-    depends_on:
-      - mosquitto
-    networks:
-      - smart_home_net
-  
-  sensor_simulator:
-    build: ./sensor_simulator
-    container_name: sensor_simulatormodule2
-    restart: unless-stopped
-    depends_on:
-      mosquitto:
-        condition: service_healthy
-    networks:
-      - smart_home_net
-    
-  influxdb:
+influxdb:
   image: influxdb:2.7
   container_name: influxdbmodule2
   restart: unless-stopped
+
   ports:
-    - "${INFLUXDB_PORT}:8086"
+    - "8086:8086"
 
   volumes:
     - influxdb_data:/var/lib/influxdb2
 
   environment:
     DOCKER_INFLUXDB_INIT_MODE: setup
-    DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_USER}
-    DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD}
+    DOCKER_INFLUXDB_INIT_USERNAME: admin
+    DOCKER_INFLUXDB_INIT_PASSWORD: adminadmin123
     DOCKER_INFLUXDB_INIT_ORG: openhab
     DOCKER_INFLUXDB_INIT_BUCKET: openhab
-    DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_TOKEN}
+    DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: DYV2UyIOUawJZanlsex_FzasHU30zWmOgKyxMWFiICP-G5FF66VrWykaZ43WdWDM-yJMkxwwHzkhT9YNQu7NXQ==
 
   networks:
     - smart_home_net
 
   healthcheck:
     test: ["CMD-SHELL", "wget -qO- http://localhost:8086/health || exit 1"]
-    interval: 30s
+    interval: 20s
     timeout: 10s
     retries: 10
-    start_period: 40s
-
-  grafana:
-    image: grafana/grafana:10.0.0
-    container_name: grafanamodule2
-    restart: unless-stopped
-    ports:
-      - "${GRAFANA_PORT}:3000"
-    volumes:
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-      - ./grafana/provisioning:/etc/grafana/provisioning
-    depends_on:
-      influxdb:
-        condition: service_healthy
-    networks:
-      - smart_home_net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  backup:
-    image: alpine
-    container_name: backupmodule2
-    volumes:
-      - ./backups:/backups
-      - ./:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    working_dir: /app
-    entrypoint: >
-      sh -c "while true; do
-        sleep 3600;
-        ./backup.sh;
-      done"
-    restart: unless-stopped
-
-networks:
-  smart_home_net:
-    driver: bridge
-volumes:
-  influxdb_data:
+    start_period: 30s
