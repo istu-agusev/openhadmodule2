@@ -4,17 +4,21 @@ services:
       context: .
       dockerfile: tests/Dockerfile
     container_name: integration_test_runner
-   depends_on:
-    mosquitto:
-      condition: service_healthy
-    influxdb:
-      condition: service_healthy
-    edge_ai:
-      condition: service_started
-    sensor_simulator:
-      condition: service_started
+
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+      edge_ai:
+        condition: service_started
+      sensor_simulator:
+        condition: service_started
+
     networks:
       - smart_home_net
+
     environment:
-      - MQTT_HOST=mosquitto
+      MQTT_HOST: mosquitto
+
     command: ["pytest", "-q", "tests/integration"]
