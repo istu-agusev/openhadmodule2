@@ -24,8 +24,18 @@ services:
     command: >
       sh -c "
         echo 'Waiting for MQTT...';
-        until nc -z mosquitto 1883; do
-          sleep 2;
-        done;
+        python - <<EOF
+    import socket, time
+    for _ in range(30):
+        try:
+            s = socket.create_connection(('mosquitto', 1883), 2)
+            s.close()
+            print('MQTT ready')
+            break
+        except:
+            time.sleep(2)
+    else:
+        raise SystemExit('MQTT not available')
+    EOF
         pytest -q tests/integration
       "
