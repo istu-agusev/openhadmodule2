@@ -38,12 +38,6 @@ services:
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
 
-    healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 1883"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
     networks:
       - smart_home_net
 
