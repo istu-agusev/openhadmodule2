@@ -100,7 +100,7 @@ services:
       context: .
       dockerfile: tests/Dockerfile
 
-    container_name: integration_test_runner
+    container_name: integration_test_runnermodule2
 
     depends_on:
       - mosquitto
