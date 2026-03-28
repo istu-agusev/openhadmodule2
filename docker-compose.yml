@@ -25,16 +25,21 @@ services:
       - smart_home_net
 
 
-  mosquitto:
-    image: eclipse-mosquitto:2.0
-    container_name: mosquittomodule2
-    restart: unless-stopped
+ mosquitto:
+  image: eclipse-mosquitto:2.0
+  container_name: mosquittomodule2
+  restart: unless-stopped
 
-    ports:
-      - "1883:1883"
+  ports:
+    - "1883:1883"
 
-    networks:
-      - smart_home_net
+  volumes:
+    - ./mosquitto/config:/mosquitto/config
+    - ./mosquitto/data:/mosquitto/data
+    - ./mosquitto/log:/mosquitto/log
+
+  networks:
+    - smart_home_net
 
 
   edge_ai:
