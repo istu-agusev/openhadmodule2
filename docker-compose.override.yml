@@ -1,7 +1,7 @@
 services:
   mosquitto:
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import socket; s=socket.socket(); s.connect(('localhost',1883)); s.close()\""]
+      test: ["CMD-SHELL", "python -c \"import socket; s=socket.socket(); s.settimeout(2); s.connect(('localhost',1883)); s.close()\""]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -23,16 +23,15 @@ services:
       PYTHONPATH: /app
 
     command: >
-      sh -c "echo 'Waiting for MQTT...'; 
-      python -c \"import socket,time;
-for _ in range(30):
+      sh -c "echo 'Waiting for MQTT...'; python -c \"import socket,time;
+import sys;
+ok=False;
+for i in range(30):
     try:
         s=socket.create_connection(('mosquitto',1883),2);
         s.close();
-        print('MQTT ready');
+        ok=True;
         break
     except:
         time.sleep(2)
-else:
-    raise SystemExit('MQTT not available')\"; 
-      pytest -q tests/integration"
+sys.exit(0 if ok else 1)\"; pytest -q tests/integration"
