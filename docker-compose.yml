@@ -24,12 +24,6 @@ services:
     networks:
       - smart_home_net
 
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
 
   mosquitto:
     image: eclipse-mosquitto:2.0
@@ -42,21 +36,13 @@ services:
     networks:
       - smart_home_net
 
-    healthcheck:
-      test: ["CMD-SHELL", "mosquitto_sub -t '$$SYS/#' -C 1 || exit 0"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
 
   edge_ai:
     build: ./edge_ai
     container_name: edge_aimodule2
     restart: unless-stopped
-
     depends_on:
       - mosquitto
-
     networks:
       - smart_home_net
 
@@ -65,10 +51,8 @@ services:
     build: ./sensor_simulator
     container_name: sensor_simulatormodule2
     restart: unless-stopped
-
     depends_on:
       - mosquitto
-
     networks:
       - smart_home_net
 
@@ -95,12 +79,6 @@ services:
     networks:
       - smart_home_net
 
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:8086/health || exit 0"]
-      interval: 20s
-      timeout: 10s
-      retries: 10
-
 
   grafana:
     image: grafana/grafana:10.0.0
@@ -110,10 +88,6 @@ services:
     ports:
       - "3000:3000"
 
-    volumes:
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-      - ./grafana/provisioning:/etc/grafana/provisioning
-
     depends_on:
       - influxdb
 
@@ -121,24 +95,27 @@ services:
       - smart_home_net
 
 
-  backup:
-    image: alpine
-    container_name: backupmodule2
+  integration_test_runner:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
 
-    volumes:
-      - ./backups:/backups
-      - ./:/app
-      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: integration_test_runner
 
-    working_dir: /app
+    depends_on:
+      - mosquitto
+      - influxdb
+      - sensor_simulator
+      - edge_ai
 
-    entrypoint: >
-      sh -c "while true; do
-        sleep 3600;
-        ./backup.sh;
-      done"
+    environment:
+      MQTT_HOST: mosquitto
+      PYTHONPATH: /app
 
-    restart: unless-stopped
+    networks:
+      - smart_home_net
+
+    command: ["pytest", "-q", "tests/integration"]
 
 
 networks:
