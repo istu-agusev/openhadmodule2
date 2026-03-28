@@ -22,16 +22,4 @@ services:
       MQTT_HOST: mosquitto
       PYTHONPATH: /app
 
-    command: >
-      sh -c "echo 'Waiting for MQTT...'; python -c \"import socket,time;
-import sys;
-ok=False;
-for i in range(30):
-    try:
-        s=socket.create_connection(('mosquitto',1883),2);
-        s.close();
-        ok=True;
-        break
-    except:
-        time.sleep(2)
-sys.exit(0 if ok else 1)\"; pytest -q tests/integration"
+    command: ["sh", "-c", "echo Waiting for MQTT... && sleep 10 && pytest -q tests/integration"]
