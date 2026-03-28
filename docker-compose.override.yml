@@ -1,24 +1,31 @@
 services:
+  mosquitto:
+    healthcheck:
+      test: ["CMD", "sh", "-c", "nc -z localhost 1883"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   test_runner:
     build:
       context: .
       dockerfile: tests/Dockerfile
-    container_name: integration_test_runner
 
     depends_on:
       mosquitto:
-        condition: service_started
-      influxdb:
-        condition: service_started
-      edge_ai:
-        condition: service_started
-      sensor_simulator:
-        condition: service_started
+        condition: service_healthy
 
     networks:
       - smart_home_net
 
     environment:
-      MQTT_HOST: mosquitto
+      - MQTT_HOST=mosquitto
 
-    command: ["pytest", "-q", "tests/integration"]
+    command: >
+      sh -c "
+        echo 'Waiting for MQTT...';
+        until nc -z mosquitto 1883; do
+          sleep 2;
+        done;
+        pytest -q tests/integration
+      "
